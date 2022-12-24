@@ -93,7 +93,7 @@ public class Board
         float row = middle - pos.Item1;
         float column = middle - pos.Item2;
 
-        return (row, column);
+        return pos;
     }
 
     public bool getState((int, int) position)

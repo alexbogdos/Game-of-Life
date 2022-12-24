@@ -81,7 +81,7 @@ public class UiController : MonoBehaviour
     public void setDuration()
     {
         float newDuration = durationSlider.value;
-        boardController.setRoundDuration(newDuration/10);
+        boardController.setRoundDuration(newDuration / 100);
     }
 
     public void CloseSettings()
@@ -101,11 +101,11 @@ public class UiController : MonoBehaviour
     {
         simulateButton.SetActive(false);
         generationCounter.SetActive(true);
+        boardController.FinishSetUp();
 
         // Delay excecution for @delay seconds
         yield return new WaitForSeconds(delay);
 
-        boardController.FinishSetUp();
         boardController.StartGame();
     }
 

@@ -169,9 +169,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 7
   tile: {fileID: 5927959940758599469, guid: 6559a3afea5b3944e94e1b6455905506, type: 3}
-  field: {fileID: 2073945723}
+  grid: {fileID: 2073945724}
   cameraTransform: {fileID: 330585546}
-  offsetFactor: 1.05
+  offsetFactor: 0.95
   mainCamera: {fileID: 330585545}
   alteranteY: 5
   counter: {fileID: 1640226077}
@@ -291,7 +291,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0.5}
+  m_LocalPosition: {x: 1, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3639,10 +3639,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1982849937}
   m_HandleRect: {fileID: 1877871193}
   m_Direction: 0
-  m_MinValue: 5
-  m_MaxValue: 10
+  m_MinValue: 25
+  m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 0.5
+  m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3870,9 +3870,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2073945724}
   m_Layer: 0
-  m_Name: Board
+  m_Name: Board Grid
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1

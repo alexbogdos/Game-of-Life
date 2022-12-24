@@ -50,7 +50,6 @@ public class TileController : MonoBehaviour
                     {
                         setAlive(!_alive);
                         board.setAlive(position, _alive);
-                        Debug.Log($"{position} {_alive}");
 
                     }
                 }

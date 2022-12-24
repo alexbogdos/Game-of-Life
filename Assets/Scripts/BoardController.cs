@@ -7,7 +7,7 @@ public class BoardController : MonoBehaviour
 {
     [SerializeField] private int length;
     [SerializeField] private GameObject tile;
-    [SerializeField] private GameObject field;
+    [SerializeField] private Transform grid;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float offsetFactor;
 
@@ -33,14 +33,10 @@ public class BoardController : MonoBehaviour
 
     public void Reset()
     {
-        foreach ((int, int) key in tileControllers.Keys) 
-        {
-            Destroy(tileControllers[key].gameObject);
-        }
-
         board = new Board(length);
         board.Generate();
         BuildBoard();
+
 
         lastLenght = length = board.Length;
         previousTime = 0f;
@@ -52,8 +48,10 @@ public class BoardController : MonoBehaviour
 
     void Awake()
     {
-        board = new Board(length);
+        board = new Board(99);
         board.Generate();
+        BuildBoard(active: false);
+        board.ReSize(length);
 
 
         lastLenght = length = board.Length;
@@ -75,7 +73,7 @@ public class BoardController : MonoBehaviour
             return;
         }
 
-        if (lastLenght != length && (3 <= length && length <= 100))
+        if (lastLenght != length && (3 <= length && length < 100))
         {
             board.ReSize(length);
             MoveCamera();
@@ -123,7 +121,6 @@ public class BoardController : MonoBehaviour
                     if (board.getState(neighbor))
                     {
                         count += 1;
-                        Debug.Log(neighbor);
                     }
                 }
 
@@ -231,21 +228,40 @@ public class BoardController : MonoBehaviour
 
     void MoveCamera()
     {
-        cameraTransform.position = new Vector3(cameraTransform.position.x, board.Length * offsetFactor, cameraTransform.position.z);
+        float p = (board.Length -1) * 0.5f;
+        float h = board.Length * offsetFactor;
+        if (board.Length <= 20) 
+        {
+            h *= 1.1f;
+        }
+        Vector3 newPos = new Vector3(p, h, p);
+        cameraTransform.position = newPos; // new Vector3(cameraTransform.position.x, board.Length * offsetFactor, cameraTransform.position.z);
     }
 
-    void BuildBoard()
+    void BuildBoard(bool active = true)
     {
-        foreach (var key in tileControllers.Keys)
+        foreach ((int, int) pos in tileControllers.Keys)
         {
-            Destroy(tileControllers[key].gameObject);
+            if (pos.Item1 >= board.Length || pos.Item2 >= board.Length)
+            {
+                tileControllers[pos].gameObject.SetActive(false);
+            }
         }
-        tileControllers.Clear();
 
 
         int count = 0;
         foreach ((int, int) pos in board.getPositions())
         {
+            if (tileControllers.ContainsKey(pos))
+            {
+                tileControllers[pos].gameObject.SetActive(true);
+                tileControllers[pos].setBoard(board);
+                tileControllers[pos].setAlive(board.getState(pos));
+                tileControllers[pos].FinishSetUp();
+                count += 1;
+                continue;
+            }
+
             (float, float) translated = board.Translate(pos);
 
             float yPos = 0;
@@ -257,17 +273,22 @@ public class BoardController : MonoBehaviour
 
             GameObject newTile = Instantiate<GameObject>(tile);
             newTile.transform.localPosition = localPos;
-            newTile.transform.SetParent(field.transform);
+            newTile.transform.SetParent(grid);
+
+            if (active == false)
+            {
+                newTile.SetActive(false);
+            }
+
             TileController tileController = newTile.GetComponent<TileController>();
             tileController.setAlive(board.getState(pos));
             tileController.setCamera(mainCamera);
             tileController.setBoard(board);
             tileController.setPosition(pos);
-
-
             newTile.name = $"({pos.Item1}, {pos.Item2})";
 
-            tileControllers[pos] = newTile.GetComponent<TileController>();
+
+            tileControllers[pos] = tileController;
 
             count += 1;
         }
