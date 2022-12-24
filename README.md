@@ -1,5 +1,5 @@
 # Game-of-Life
- This is a 3D version of Conway's simulation "Game of Life"
+This is a 3D version of Conway's simulation "Game of Life"
 
 ### Screenshots
 <img height=300 src="https://user-images.githubusercontent.com/98696250/209431973-19bf9ba5-da1f-4728-8a72-0bb9c84a684e.png">
